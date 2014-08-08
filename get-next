@@ -1,0 +1,7 @@
+#!/bin/bash
+
+url="http://www.wolframalpha.com/input/?i=$1 plus one"
+wget "$url" -O downloaded_page 2> /dev/null
+pod=$(cat downloaded_page | grep -B 4 -E 'pod.+Result' | grep -Eo 'pod_[0-9]+' | head -n 1)
+num=$(cat downloaded_page | grep "$pod" | grep -Eo 'stringified[^0-9]+[0-9]+' | grep -Eo '[0-9]+')
+echo "$num" > result_file
